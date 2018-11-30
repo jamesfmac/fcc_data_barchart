@@ -26,6 +26,7 @@ h1{
 
 .chart{
     background-color: wheat;
+    margin-bottom: 20px;
 }
 .chart rect {
     fill: steelblue;
