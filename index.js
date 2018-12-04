@@ -39,23 +39,30 @@ const yScale = d3.scaleLinear()
   .range([height - padding, padding]);
 
 
-
+const chartContainer = d3.select('#chart')
 
 //attach an SVG to the page to hold the chart
 
-const chart = d3.select('#chart')
+const chart = chartContainer
   .append('svg')
   .attr('height', height)
   .attr('width', width)
   .attr('title', title)
   .attr('class', 'chart')
 
-d3.select('#chart')
+const tooltip = d3.select('#chart')
 .append('div')
 .attr('class', 'tooltip')
+.attr('id', 'tooltip')
   
 
-
+function getOffset(el) {
+  const rect = el.getBoundingClientRect();
+  return {
+    left: rect.left + window.scrollX,
+    top: rect.top + window.scrollY
+  };
+}
 
 
 
@@ -79,20 +86,24 @@ var bar = chart.selectAll('g')
   .attr('x', (d, i) => padding + i * barWidth)
   .on('mouseover', function(d,i){})
 
-  /*
+  
   //adding tooltips
-  .on("mouseover", function (d) {
-    bar.append("div")
-    .attr('y', (height-padding)-20)
-    .text('Tooltip')
-
+  .on("mouseover", function (d,i) {
+    tooltip.transition()
+    .style('left',getOffset(chartContainer._groups[0][0]).left + padding + (i+1) * barWidth  )
+    .style('top', getOffset(chartContainer._groups[0][0]).top + 0.75 *height  )
+   
+    .attr("data-date", d[0])
+    .attr("data-gdp", d[1])
+    .style('opacity', 0.9)
+    .text(d[1])
+    console.log(d)
       
   })
-  .on("mouseout", function (d) {
-    div.transition()
+  .on("mouseout", function (el) {
+    tooltip.transition()
       .style("opacity", 0);
   });
-*/
 
 //adding axis
 const xAxis = d3.axisBottom(xScale);

@@ -51,4 +51,5 @@ h1{
     background: lightsteelblue;
     box-shadow: 1px 1px 10px;
     border-radius: 2px;
-    pointer-events: none; }
+    pointer-events: none;
+   opacity: 0;
