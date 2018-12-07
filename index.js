@@ -1,30 +1,8 @@
 
-//test data 
-var testdata = [
-  [
-    "1947-01-01",
-    243.1
-  ],
-  [
-    "1947-04-01",
-    246.3
-  ],
-  [
-    "1947-07-01",
-    250.1
-  ],
-  [
-    "1947-10-01",
-    260.3
-  ]]
-
-
   let rawDates=[]
   let years = []
   let quarters = []
   let datSet = []
-
-
 
 
 //defaults for the chart
@@ -88,8 +66,16 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
         return "Q4"
       }
     })
+  
+    let minDate = d3.min(years)
+    let maxDate = d3.max(years)
 
     const GDP = dataset.map(d => d[1])
+
+    let dateRange = document.createElement("H2")
+    dateRange.appendChild(document.createTextNode(minDate + " - " + maxDate))
+
+    document.getElementById('chart-heading').appendChild(dateRange)
 
     //transformers to make sure the element fits inside the box 
 
@@ -125,14 +111,16 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
 
       //adding tooltips
       .on("mouseover", function (d, i) {
+        
         tooltip.transition()
         .duration(0)
           .style('left', getOffset(chartContainer._groups[0][0]).left + padding * 1.5 + (i + 1) * barWidth)
-          .style('top', getOffset(chartContainer._groups[0][0]).top + 0.7 * height)
+          .style('top', getOffset(chartContainer._groups[0][0]).top + 0.75 * height)
         tooltip.html(years[i] +' '+ quarters[i] + '<br>' + '$' + GDP[i].toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + ' Billion')
           .attr("data-date", d[0])
           .attr("data-gdp", d[1])
           .style('opacity', 0.9)
+          .attr('class', 'tooltip')
 
 
 
