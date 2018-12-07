@@ -18,8 +18,11 @@ var testdata = [
     260.3
   ]]
 
-var dataset = testdata
 
+  let rawDates=[]
+  let years = []
+  let quarters = []
+  let datSet = []
 
 
 
@@ -66,10 +69,27 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
     return response.json();
   })
   .then(function (myJson) {
-    dataset = myJson.data
+     dataset = myJson.data
 
+     rawDates = dataset.map(d => new Date(d[0]))
+     years = dataset.map (d => d[0].substring(0,4))
+     quarters = dataset.map ((d)=>{
+       let temp = d[0].substring(5,7)
+      if (temp==01){
+        return "Q1"
+      }
+      if (temp == 04){
+        return "Q2"
+      }
+      if (temp ==07){
+        return "Q3"
+      }
+      if (temp ==10) {
+        return "Q4"
+      }
+    })
 
-
+    const GDP = dataset.map(d => d[1])
 
     //transformers to make sure the element fits inside the box 
 
@@ -77,8 +97,8 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
 
     const xScale = d3.scaleTime()
       .range([padding, width - padding])
-      .domain(d3.min(dataset, (d)=> d[0]),d3.max(dataset, (d)=> d[0]))
-     
+      .domain([d3.min(rawDates), d3.max(rawDates)])
+
 
     const yScale = d3.scaleLinear()
       .domain([0, d3.max(dataset, (d) => d[1])])
@@ -106,14 +126,15 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
       //adding tooltips
       .on("mouseover", function (d, i) {
         tooltip.transition()
+        .duration(0)
           .style('left', getOffset(chartContainer._groups[0][0]).left + padding * 1.5 + (i + 1) * barWidth)
           .style('top', getOffset(chartContainer._groups[0][0]).top + 0.7 * height)
-
+        tooltip.html(years[i] +' '+ quarters[i] + '<br>' + '$' + GDP[i].toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + ' Billion')
           .attr("data-date", d[0])
           .attr("data-gdp", d[1])
           .style('opacity', 0.9)
-          .text(d[1])
-       
+
+
 
       })
       .on("mouseout", function (el) {
@@ -122,12 +143,15 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
       });
 
     //adding the axis
-    const xAxis = d3.axisBottom(xScale)
+    const xAxis =
+      d3.axisBottom(xScale)
+        .ticks(d3.timeYear.every(5))
 
     chart.append("g")
       .attr("id", "x-axis")
       .attr("transform", "translate(0, " + (height - padding) + ")")
-      .call(xAxis);
+      .call(xAxis)
+
 
     const yAxis = d3.axisLeft(yScale);
 
