@@ -48,15 +48,71 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
   .then(function (myJson) {
     dataset = myJson.data
     drawChart(dataset)
+    populateDateDropdowns(dataset)
   })
 
 const filterDates = function (sDate, eDate) {
 
   drawChart(
     dataset.filter((d) => {
-      return d[0] > sDate && d[0] <= eDate +1
+      return d[0] > sDate && d[0] <= eDate + 1
     })
   )
+
+}
+
+const populateDateDropdowns = function (dataset) {
+
+  function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
+  //set date range options 
+  const availibleYears = dataset.map(d => d[0].substring(0, 4))
+  const sDateSelect = document.getElementById("sDate");
+  const eDateSelect = document.getElementById("eDate");
+  const reset = document.getElementById('reset');
+
+  sDateSelect.addEventListener("change", function (e) {
+    filterDates(sDateSelect.value, eDateSelect.value)
+    reset.style.display= 'inline'
+    sDateSelect.blur()
+  });
+
+  eDateSelect.addEventListener("change", function (e) {
+    console.log(eDateSelect.value)
+    filterDates(sDateSelect.value, eDateSelect.value)
+    reset.style.display= 'inline'
+    eDateSelect.blur()
+  });
+
+  reset.addEventListener("click",function(d){
+   
+    sDateSelect.value = d3.min(availibleYears)
+    eDateSelect.value = d3.max(availibleYears)
+    filterDates(sDateSelect.value, eDateSelect.value)
+    reset.style.display= 'none'
+    
+
+  })
+
+
+  availibleYears.filter(onlyUnique).forEach(year => {
+
+    let sOptionValue = document.createElement("option")
+    sOptionValue.text = year
+    sDateSelect.add(sOptionValue);
+
+    let eOptionValue = document.createElement("option")
+    eOptionValue.text = year
+    eDateSelect.add(eOptionValue);
+
+  });
+  eDateSelect.value = d3.max(availibleYears)
+
+ 
+
+
 
 }
 
@@ -90,9 +146,10 @@ const drawChart = function (dataset) {
 
   const GDP = dataset.map(d => d[1])
 
+ /*
   //update date range heading 
   if (document.getElementById('selectedDateRange')) {
-    document.getElementById('selectedDateRange').childNodes[0].nodeValue = minDate + " - " +maxDate
+    document.getElementById('selectedDateRange').childNodes[0].nodeValue = minDate + " - " + maxDate
     console.log('found')
   }
   else {
@@ -101,27 +158,10 @@ const drawChart = function (dataset) {
     dateRange.appendChild(document.createTextNode(minDate + " - " + maxDate))
 
     document.getElementById('chart-heading').appendChild(dateRange)
-
   }
-
-//set date range options 
-
-const sDateSelect = document.getElementById("sDate");
-const eDateSelect = document.getElementById("eDate");
-
-function onlyUnique(value, index, self) { 
-  return self.indexOf(value) === index;
-}
-years.filter(onlyUnique).forEach(year => {
-  let sOptionValue = document.createElement("option")
-  sOptionValue.text =year
-  sDateSelect.add(sOptionValue);
+  */
   
-  let eOptionValue = document.createElement("option")
-  eOptionValue.text =year
-  eDateSelect.add(eOptionValue);
- 
-});
+
 
 
 
@@ -130,7 +170,7 @@ years.filter(onlyUnique).forEach(year => {
 
   const barWidth = (width - padding * 2) / dataset.length;
 
-  
+
   xScale = d3.scaleTime()
     .range([padding, width - padding])
     .domain([d3.min(rawDates), d3.max(rawDates)])

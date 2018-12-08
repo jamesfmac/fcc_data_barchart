@@ -39,8 +39,48 @@ h1{
     background-color: whitesmoke;
     margin-bottom: 20px;
     box-shadow: 0px 2px 2px 0px whitesmoke;
-    border-radius: 2px;
+    border-radius: 3px;
 }
+
+#chart-controls{
+    text-align: center;
+    align-content: center;
+
+}
+.date-selector{
+    font-size: 1em;
+    font-family: monospace;
+    letter-spacing: 0.1em;
+    font-weight: 100;
+    color: grey;
+    text-align: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+#sDate{
+    margin-right: 0.4em
+}
+
+form{
+    margin-bottom: .2em;
+ 
+}
+
+#reset{
+    text-align: center;
+    font-size: .75em;
+    font-family: monospace;
+    letter-spacing: 0.1em;
+    font-weight: 100;
+    color: grey;
+    text-align: center;
+    text-decoration: underline;
+    cursor: pointer;
+    display: none;
+}
+
+
 .chart rect {
     fill: steelblue;
   }

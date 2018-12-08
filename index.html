@@ -16,21 +16,25 @@
     <div class='chart-container'>
         <div class="chart-heading" id = 'chart-heading'>
             <h2 id="title">USA Quarterly GDP </h2>
+            <div id="chart-controls">
+                    <form>
+
+                       <select class="date-selector" id ='sDate'> 
+                       </select>
+                       -
+                       <select class="date-selector" id = 'eDate'>
+                          
+                        </select>
+                        <span id='reset'>
+                                Reset
+                            </span>
+                  
+                    </form>
+                </div>
+            
         </div>
         <div id="chart"></div>
-        <div id="char-controls">
-            <form>
-                From
-               <select id ='sDate'>
-                  
-               </select>
-               To
-               <select id = 'eDate'>
-                  
-                </select>
-                <button type="button">Filter</button>
-            </form>
-        </div>
+        
     </div>
 </main>
 
