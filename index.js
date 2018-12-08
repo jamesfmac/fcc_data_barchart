@@ -37,7 +37,7 @@ function getOffset(el) {
   };
 }
 
-
+let xScale = ''
 
 //TODO call to fetch the data will go here 
 
@@ -48,6 +48,12 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
   })
   .then(function (myJson) {
      dataset = myJson.data
+
+     chart.append('text')
+     .attr('transform', 'rotate(-90)')
+     .attr('x', -200)
+     .attr('y', 60)
+     .text('Gross Domestic Product');
 
      rawDates = dataset.map(d => new Date(d[0]))
      years = dataset.map (d => d[0].substring(0,4))
@@ -81,7 +87,7 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
 
     const barWidth = (width - padding * 2) / dataset.length;
 
-    const xScale = d3.scaleTime()
+     xScale = d3.scaleTime()
       .range([padding, width - padding])
       .domain([d3.min(rawDates), d3.max(rawDates)])
 
@@ -105,7 +111,7 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
       .attr('height', (d) => (height - padding) - yScale(d[1]))
 
       .attr('y', (d) => yScale(d[1]))
-      .attr('x', (d, i) => padding + i * barWidth)
+      .attr('x', (d, i) => xScale(rawDates[i]))
       .on('mouseover', function (d, i) { })
 
 
@@ -147,8 +153,7 @@ fetch('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
       .attr("id", "y-axis")
       .attr("transform", "translate(" + padding + ",0)")
       .call(yAxis);
-    let ticks = d3.selectAll(".tick text");
-    ticks.attr("class", "tick")
+    
 
   })
 
