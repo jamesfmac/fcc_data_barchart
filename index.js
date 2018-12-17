@@ -198,7 +198,6 @@ const drawChart = function (dataset) {
 
     .attr('y', (d) => yScale(d[1]))
     .attr('x', (d, i) => xScale(rawDates[i]))
-    .on('mouseover', function (d, i) { })
 
 
     //adding tooltips

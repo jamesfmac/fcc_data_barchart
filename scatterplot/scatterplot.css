@@ -96,13 +96,14 @@ form{
 
   .tooltip {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-evenly;
     position: absolute;
     text-align: center;
-    width: 100px;
-    height: 40px;
-    padding: 2px;
+    width: 150px;
+    height: fit-content;
+    padding: 9px;
     font-size: .75em;
     background: lightsteelblue;
     box-shadow: 1px 1px 10px;
@@ -115,3 +116,14 @@ form{
    color: grey;
    text-align: center;
   }
+.tooltip > .name {
+    font-size: 1.1em;
+    margin-bottom: 4px;
+    justify-self: center;
+    align-self: center
+
+}
+.tooltip> .reason {
+    text-align: left;
+    margin-top: 6px;
+}
