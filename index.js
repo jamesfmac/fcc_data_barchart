@@ -171,7 +171,7 @@ const drawChart = function (dataset) {
   const barWidth = (width - padding * 2) / dataset.length;
 
 
-  xScale = d3.scaleTime()
+  const xScale = d3.scaleTime()
     .range([padding, width - padding])
     .domain([d3.min(rawDates), d3.max(rawDates)])
 
