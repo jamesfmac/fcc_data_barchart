@@ -2,6 +2,7 @@
 const height = 400
 const width = 800
 const padding = 40
+const radius = 4
 const title = "Doping in Proffesional Bicycle Racing"
 const timeFormat = d3.timeFormat("%M:%S");
 const yearFormat = d3.timeFormat("%Y");
@@ -57,26 +58,46 @@ const drawChart = function (data){
        
     })
 
-
     const allYears = data.map((d)=> {
        return  d.Year
     })
-
-   
-
 
     const yScale = d3.scaleTime()
     .domain([d3.max(allTimes), d3.min(allTimes)])
     .range([height - padding, padding])
    
-    console.log(yScale)
+  
 
     const xScale = d3.scaleLinear()
     .domain([d3.min(allYears) -1, d3.max(allYears) +1])
     .range([padding, width - padding])
 
-    drawAxis(data,xScale, yScale)
+    
 
+   //adding dots 
+   console.log(allTimes)
+   console.log(data)
+   console.log(allYears)
+   var dots = chart.selectAll('g')
+   
+   .data(data)
+   .enter()
+   .append('g')
+   .append('circle')
+   .attr("class", "dot")
+   .attr("cx", function (d,i) { return xScale(allYears[i]) })
+   .attr("cy", function (d,i) { return yScale(allTimes[i]) ; })
+   .attr("r", radius)
+   .attr("data-xvalue", function(d,i){return allYears[i]})
+   .attr("data-yvalue", function(d,i){return allTimes[i]})
+   .style("fill", function(d,i) { if(d.Doping.length > 1){
+     return 'red'
+   }
+   else {
+     return 'blue'
+   }; })
+
+   drawAxis(data,xScale, yScale)
 
 }
 
